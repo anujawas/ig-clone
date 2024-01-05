@@ -6,15 +6,15 @@ const Header = () => {
     return (
         <View style={styles.container}>
             <TouchableOpacity>
-                <Image style={styles.logo} source={require('../../assets/images/ig-transaparent-white.png')} />
+                <Image style={styles.logo} source={require('../../../assets/images/ig-transaparent-white.png')} />
             </TouchableOpacity>
 
             <View style={styles.iconContainer}>
                 <TouchableOpacity>
-                    <Image style={styles.icon} source={require('../../assets/images/icons8-add-new-50.png')} />
+                    <Image style={styles.icon} source={require('../../../assets/images/icons8-add-new-50.png')} />
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Image style={styles.icon} source={require('../../assets/images/icons8-heart-50.png')} />
+                    <Image style={styles.icon} source={require('../../../assets/images/icons8-heart-50.png')} />
                 </TouchableOpacity>
 
                 <TouchableOpacity>
@@ -23,7 +23,7 @@ const Header = () => {
                             11
                         </Text>
                     </View>
-                    <Image style={styles.icon} source={require('../../assets/images/icons8-messenger-50.png')} />
+                    <Image style={styles.icon} source={require('../../../assets/images/icons8-messenger-50.png')} />
                 </TouchableOpacity>
 
 
