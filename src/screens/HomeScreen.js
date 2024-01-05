@@ -1,6 +1,8 @@
 import React from 'react'
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import Header from '../components/Header'
+import { StyleSheet, Text, View } from 'react-native'
+
+import { SafeAreaView } from 'react-native-safe-area-context'
+import Header from '../components/Home/Header'
 
 const HomeScreen = () => {
     return (
