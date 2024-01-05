@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, SafeAreaView } from 'react-native'
 
-const Headers = () => {
+const Header = () => {
     return (
         <SafeAreaView className="flex-1">
             <View className="flex-1 justify-center items-center">
@@ -13,4 +13,4 @@ const Headers = () => {
     )
 }
 
-export default Headers
+export default Header
