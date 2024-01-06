@@ -4,7 +4,7 @@ export const POSTS = [
         imageUrl: "https://akm-img-a-in.tosshub.com/indiatoday/images/story/202401/rohit-sharma--virat-kohli-16210057-16x9.jpg?VersionId=7OIdApCT1V0WGQiTITCb2SBoz5BOYLMc",
         user: Users[0].username,
         likes: 54001,
-        caption: "Re-contextualized real-time software",
+        caption: "Re-contextualized real-time software Hello world. Last Year was fun",
         profile_picture: Users[0].image,
         comments: [
             {
