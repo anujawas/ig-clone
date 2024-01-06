@@ -8,6 +8,7 @@ import Post from '../components/Home/Post'
 
 
 import { POSTS } from '../../assets/data/Posts'
+import BottomTabs from '../components/Home/BottomTabs'
 
 const HomeScreen = () => {
     return (
@@ -17,6 +18,7 @@ const HomeScreen = () => {
             <ScrollView>
                 {POSTS.map((post, index) => (<Post post={post} key={index} />))}
             </ScrollView>
+            <BottomTabs />
         </SafeAreaView>
     )
 }
