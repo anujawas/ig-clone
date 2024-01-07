@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 
 
-const Header = () => {
+const Header = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity>
@@ -10,8 +10,9 @@ const Header = () => {
             </TouchableOpacity>
 
             <View style={styles.iconContainer}>
-                <TouchableOpacity>
-                    <Image style={styles.icon} source={require('../../../assets/images/icons8-add-new-50.png')} />
+                <TouchableOpacity onPress={() => navigation.push('NewPost')}>
+                    <Image style={styles.icon} source={require('../../../assets/images/icons8-add-new-50.png')}
+                    />
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <Image style={styles.icon} source={require('../../../assets/images/icons8-heart-50.png')} />
