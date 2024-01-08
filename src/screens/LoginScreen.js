@@ -1,10 +1,10 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, View } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import LoginForm from '../components/loginScreen/LoginForm'
 const IG_LOGO = 'https://www.shawspaving.co.uk/wp-content/uploads/2019/01/instagram-font-logo-white-png-350x133.png'
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.logoContainer}>
@@ -19,7 +19,7 @@ const LoginScreen = () => {
                     }}
                 />
             </View>
-            <LoginForm />
+            <LoginForm navigation={navigation} />
         </SafeAreaView>
     )
 }
