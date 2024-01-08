@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { Divider, Image } from 'react-native-elements'
 
@@ -6,6 +6,8 @@ import { Divider, Image } from 'react-native-elements'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import validator from 'email-validator'
+
+import firebase from 'firebase/compat'
 
 const SignUpForm = ({ navigation }) => {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
@@ -23,11 +25,24 @@ const SignUpForm = ({ navigation }) => {
             .min(6, 'Password must be at least 6 characters')
     })
 
+    const onSignUp = async (email, password, username) => {
+        try {
+            const authCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
+            const { user } = authCredential
+            await user.updateProfile({
+                displayName: username
+            })
+        } catch (error) {
+            Alert.alert('Error', error.message)
+        }
+    }
+
+
     return (
         <View style={{ flex: 1, justifyContent: 'space-between' }} >
             <Formik
                 initialValues={{ email: '', username: '', password: '' }}
-                onSubmit={(values) => { console.log(values) }}
+                onSubmit={(values) => { onSignUp(values.email, values.password, values.username) }}
                 validationSchema={SignUpFormSchema}
                 validateOnMount={true}
 
