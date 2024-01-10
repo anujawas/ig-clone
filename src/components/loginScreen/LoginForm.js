@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native'
+import { Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
 import { Divider, Image } from 'react-native-elements'
 
@@ -7,7 +7,7 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import validator from 'email-validator'
 
-import firebase from '../../../firebase'
+import { firebase } from '../../../firebase'
 
 const LoginForm = ({ navigation }) => {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
@@ -26,7 +26,12 @@ const LoginForm = ({ navigation }) => {
     const onLogin = async (email, password) => {
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password)
-            console.log('Logged In Successfully');
+            ToastAndroid.showWithGravityAndOffset(
+                "Successfully logged out.",
+                ToastAndroid.LONG,
+                ToastAndroid.TOP,
+                0, 200
+            )
         } catch (error) {
             Alert.alert('Error', error.message + "\n\n What would you like to do?", [
                 {
