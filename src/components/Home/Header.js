@@ -1,11 +1,41 @@
 import React from 'react'
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, ToastAndroid } from 'react-native'
+import { firebase } from "../../../firebase"
 
 
 const Header = ({ navigation }) => {
+    const handleHomeClick = async () => (
+        Alert.alert('Home Options', "You have Pressed Home Button.\nWhat would you like do", [
+            {
+                text: 'Go to Home',
+                onPress: () => {
+                    navigation.replace("Home")
+                }
+            },
+            {
+                text: 'Log out',
+                onPress: async () => {
+                    try {
+                        await firebase.auth().signOut().then(
+                            (res) = (
+                                ToastAndroid.showWithGravityAndOffset(
+                                    "Successfully logged out.",
+                                    ToastAndroid.LONG,
+                                    ToastAndroid.TOP,
+                                    0, 200)
+                            )
+                        )
+                    } catch {
+                        console.log("Error in signing out the user.")
+                    }
+                }
+            },
+        ])
+    )
+
     return (
         <View style={styles.container}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleHomeClick}>
                 <Image style={styles.logo} source={require('../../../assets/images/ig-transaparent-white.png')} />
             </TouchableOpacity>
 
