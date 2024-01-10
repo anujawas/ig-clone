@@ -14,7 +14,7 @@ const screenOptions = {
     headerShown: false
 }
 
-const SignedInStack = () => {
+export const SignedInStack = () => {
     const [selectedImage, setSelectedImage] = useState(null)
     return (
         <NavigationContainer>
@@ -23,8 +23,6 @@ const SignedInStack = () => {
                 <Stack.Screen name="NewPost">
                     {props => <NewPostScreen {...props} setSelectedImage={setSelectedImage} />}
                 </Stack.Screen>
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="SignUp" component={SignUpScreen} />
                 <Stack.Screen name="Upload">
                     {props => <UploadPostScreen {...props} selectedImage={selectedImage} />}
                 </Stack.Screen>
@@ -33,4 +31,13 @@ const SignedInStack = () => {
     )
 }
 
-export default SignedInStack
+export const SignedOutStack = () => (
+    <NavigationContainer>
+        <Stack.Navigator initialRouteName='Login' screenOptions={screenOptions}>
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
+        </Stack.Navigator>
+    </NavigationContainer>
+)
+
+
