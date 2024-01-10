@@ -7,7 +7,7 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import validator from 'email-validator'
 
-import firebase from 'firebase/compat'
+import { firebase, db } from '../../../firebase'
 
 const SignUpForm = ({ navigation }) => {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
@@ -24,13 +24,29 @@ const SignUpForm = ({ navigation }) => {
             .required('Required')
             .min(6, 'Password must be at least 6 characters')
     })
+    const getRandomProfilePicture = async () => {
+        let response = await fetch("https://randomuser.me/api")
+        let data = await response.json();
+        let img = data.results[0].picture.large;
+
+        console.log(img);
+        return img;
+    }
 
     const onSignUp = async (email, password, username) => {
         try {
             const authCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
-            const { user } = authCredential
-            await user.updateProfile({
-                displayName: username
+            console.log("Successfully created new user: ", authCredential.user);
+
+            await db.collection('users').add({
+                owner_uid: authCredential.user?.uid,
+                username: username,
+                email: authCredential.user.email,
+                profilePic: await getRandomProfilePicture(),
+            }).then((res) => {
+                console.log("User added successfully to firestore: ", res);
+            }).catch((error) => {
+                console.log("Failed eto add data to firestore", error);
             })
         } catch (error) {
             Alert.alert('Error', error.message)
