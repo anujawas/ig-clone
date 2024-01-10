@@ -82,10 +82,10 @@ const SignUpForm = ({ navigation }) => {
                             }]}>
                                 <TextInput
                                     placeholderTextColor={'#777'}
-                                    placeholder={'Phone number, username, or email'}
+                                    placeholder={'Email'}
                                     autoCapitalize='none'
                                     keyboardType='email-address'
-                                    textContentType={'emailAddress' || 'username' || 'telephoneNumber'}
+                                    textContentType={'emailAddress'}
                                     autoFocus={true}
                                     style={styles.inputField}
                                     onChangeText={handleChange('email')}
