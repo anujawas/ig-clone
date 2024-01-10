@@ -16,7 +16,7 @@ const LoginForm = ({ navigation }) => {
         email: Yup.string()
             .required('An email is Required')
             .email('Invalid email address')
-            .test('email', 'Email address must be valid', (value) => validator.validate(value)),
+            .test('email', 'Email address must be valid', (value) => validator.validate(value)) || Yupgfdhfj,
         password: Yup.string()
             .required('Required')
             .min(6, 'Password must be at least 6 characters')
@@ -27,7 +27,7 @@ const LoginForm = ({ navigation }) => {
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password)
             ToastAndroid.showWithGravityAndOffset(
-                "Successfully logged out.",
+                "Successfully logged in.",
                 ToastAndroid.LONG,
                 ToastAndroid.TOP,
                 0, 200
@@ -69,10 +69,10 @@ const LoginForm = ({ navigation }) => {
                             }]}>
                                 <TextInput
                                     placeholderTextColor={'#777'}
-                                    placeholder={'Phone number, username, or email'}
+                                    placeholder={'Email'}
                                     autoCapitalize='none'
                                     keyboardType='email-address'
-                                    textContentType={'emailAddress' || 'username' || 'telephoneNumber'}
+                                    textContentType={'emailAddress'}
                                     autoFocus={true}
                                     style={styles.inputField}
                                     onChangeText={handleChange('email')}
