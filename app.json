@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Instagram",
-    "slug": "blank",
+    "slug": "instagram-clone",
     "version": "1.0.0",
     "platforms": [
       "ios",
@@ -21,6 +21,15 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "223f5425-bca3-4236-88af-dabd009ad46d"
+      }
+    },
+    "owner": "awasthianuj394",
+    "android": {
+      "package": "com.awasthianuj394.instagramclone"
+    }
   }
 }
