@@ -1,4 +1,4 @@
-import { Alert, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Pressable, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { Divider, Image } from 'react-native-elements'
 
@@ -36,7 +36,6 @@ const SignUpForm = ({ navigation }) => {
     const onSignUp = async (email, password, username) => {
         try {
             const authCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
-            console.log("Successfully created new user: ", authCredential.user);
 
             await db.collection('users').add({
                 owner_uid: authCredential.user?.uid,
@@ -45,6 +44,12 @@ const SignUpForm = ({ navigation }) => {
                 profilePic: await getRandomProfilePicture(),
             }).then((res) => {
                 console.log("User added successfully to firestore: ", res);
+                ToastAndroid.showWithGravityAndOffset(
+                    "New Account Created Successfully.",
+                    ToastAndroid.LONG,
+                    ToastAndroid.TOP,
+                    0, 200
+                )
             }).catch((error) => {
                 console.log("Failed eto add data to firestore", error);
             })
