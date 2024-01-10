@@ -1,5 +1,6 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import UploadScreen from './NewPostUpload'
 import PostUploader from './PostUploader'
 
 const Header = ({ navigation }) => {
@@ -20,22 +21,24 @@ const Header = ({ navigation }) => {
     )
 }
 
-const AddNewPost = ({ navigation }) => {
+const AddNewPost = ({ navigation, setSelectedImage }) => {
     return (
         <View style={styles.container}>
             <Header navigation={navigation} />
-            <PostUploader navigation={navigation} />
+            <UploadScreen navigation={navigation} setSelectedImage={setSelectedImage} />
         </View>
     )
 }
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        flex: 1,
     },
     headerContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        height: 50,
     },
     headerText: {
         color: 'white',
