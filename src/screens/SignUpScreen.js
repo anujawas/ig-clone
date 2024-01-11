@@ -2,9 +2,12 @@ import { Image, StyleSheet, View } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import SignUpForm from '../components/Signup/SignupForm'
+import Loader from '../components/global/Loader'
+import { useLoading } from '../../LoadingContext'
 const IG_LOGO = 'https://www.shawspaving.co.uk/wp-content/uploads/2019/01/instagram-font-logo-white-png-350x133.png'
 
 const SignUpScreen = ({ navigation }) => {
+    const { loading } = useLoading()
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.logoContainer}>
@@ -20,6 +23,7 @@ const SignUpScreen = ({ navigation }) => {
                 />
             </View>
             <SignUpForm navigation={navigation} />
+            <Loader visible={loading} />
         </SafeAreaView>
     )
 }

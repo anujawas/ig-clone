@@ -3,8 +3,12 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import LoginForm from '../components/loginScreen/LoginForm'
 const IG_LOGO = 'https://www.shawspaving.co.uk/wp-content/uploads/2019/01/instagram-font-logo-white-png-350x133.png'
+import Loader from '../components/global/Loader'
+import { useLoading } from '../../LoadingContext'
+
 
 const LoginScreen = ({ navigation }) => {
+    const { loading } = useLoading()
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.logoContainer}>
@@ -20,6 +24,7 @@ const LoginScreen = ({ navigation }) => {
                 />
             </View>
             <LoginForm navigation={navigation} />
+            <Loader visible={loading} />
         </SafeAreaView>
     )
 }
@@ -31,7 +36,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'black',
         paddingTop: 155,
-        paddingHorizontal: 12
+        paddingHorizontal: 12,
     },
     logoContainer: {
         marginTop: 60,
