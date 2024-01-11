@@ -1,6 +1,10 @@
 import { View, TouchableOpacity, Image, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Divider } from 'react-native-elements'
+import { firebase, db } from "../../../firebase"
+
+
+
 export const BottomTabsIcons = [{
     "name": "Home",
     "active": "https://img.icons8.com/material-rounded/24/FFFFFF/home.png",
@@ -20,8 +24,8 @@ export const BottomTabsIcons = [{
     "inactive": "https://img.icons8.com/fluency-systems-regular/48/FFFFFF/shopping-bag-full.png"
 }, {
     "name": "Profile",
-    "active": "https://i.ibb.co/FmGHb06/Icon-60.png",
-    "inactive": "https://i.ibb.co/FmGHb06/Icon-60.png"
+    "active": "https://firebasestorage.googleapis.com/v0/b/rn-ig-clone-e753f.appspot.com/o/postImage%2Fe2cb1db4-eb68-4271-90b4-ff50b8b3ec6d.jpeg?alt=media&token=7ce2b7e6-9ced-4061-9cfd-c85088db0fc2",
+    "inactive": "https://firebasestorage.googleapis.com/v0/b/rn-ig-clone-e753f.appspot.com/o/postImage%2Fe2cb1db4-eb68-4271-90b4-ff50b8b3ec6d.jpeg?alt=media&token=7ce2b7e6-9ced-4061-9cfd-c85088db0fc2"
 }]
 
 const BottomTabs = () => {

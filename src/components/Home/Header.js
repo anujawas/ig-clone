@@ -26,7 +26,8 @@ const Header = ({ navigation }) => {
                             )
                         )
                     } catch {
-                        console.log("Error in signing out the user.")
+                        Alert.alert("Signout Error", "Failed to sign out the user.\nKindly try again")
+
                     }
                 }
             },
