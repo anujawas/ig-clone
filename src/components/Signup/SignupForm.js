@@ -7,7 +7,10 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import validator from 'email-validator'
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { firebase, db } from '../../../firebase'
+import { useLoading } from '../../../LoadingContext'
 
 const SignUpForm = ({ navigation }) => {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
@@ -29,33 +32,32 @@ const SignUpForm = ({ navigation }) => {
         let data = await response.json();
         let img = data.results[0].picture.large;
 
-        console.log(img);
         return img;
     }
-
+    const { setLoading } = useLoading()
     const onSignUp = async (email, password, username) => {
+        setLoading(true)
         try {
-            const authCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
+            const authCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+            ToastAndroid.showWithGravityAndOffset(
+                "New Account Created Successfully.",
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+                0, 200
+            )
+            await db.collection('users')
+                .doc(authCredential.user.email)
+                .set({
+                    owner_uid: authCredential.user?.uid,
+                    username: username,
+                    email: authCredential.user.email,
+                    profilePic: await getRandomProfilePicture(),
+                })
 
-            await db.collection('users').add({
-                owner_uid: authCredential.user?.uid,
-                username: username,
-                email: authCredential.user.email,
-                profilePic: await getRandomProfilePicture(),
-            }).then((res) => {
-                console.log("User added successfully to firestore: ", res);
-                ToastAndroid.showWithGravityAndOffset(
-                    "New Account Created Successfully.",
-                    ToastAndroid.LONG,
-                    ToastAndroid.TOP,
-                    0, 200
-                )
-            }).catch((error) => {
-                console.log("Failed eto add data to firestore", error);
-            })
         } catch (error) {
             Alert.alert('Error', error.message)
         }
+        setLoading(false)
     }
 
 
