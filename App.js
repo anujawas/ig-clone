@@ -1,8 +1,10 @@
-import AuthNavigation from "./authNavigation";
-
+import AuthNavigation from "./AuthNavigation";
+import { LoadingProvider } from "./LoadingContext";
 
 export default function App() {
   return (
-    <AuthNavigation />
+    <LoadingProvider>
+      <AuthNavigation />
+    </LoadingProvider>
   );
 }
