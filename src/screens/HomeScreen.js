@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -9,8 +9,19 @@ import Post from '../components/Home/Post'
 
 import { POSTS } from '../../assets/data/Posts'
 import BottomTabs from '../components/Home/BottomTabs'
+import { db, firebase } from '../../firebase'
 
 const HomeScreen = ({ navigation }) => {
+    useEffect(() => {
+        if (firebase.auth().currentUser !== null) {
+
+            db.collectionGroup('posts').onSnapshot(snapshot => {
+                console.log(snapshot.docs.map(doc => doc.data()));
+            })
+        }
+
+    }, [])
+
     return (
         <SafeAreaView style={styles.container}>
             <Header navigation={navigation} />
