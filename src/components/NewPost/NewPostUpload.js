@@ -4,10 +4,10 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
+    Alert,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import PostUploader from './PostUploader';
 import { Camera } from 'expo-camera';
 import FetchRecent from './FetchRecent';
 
@@ -21,37 +21,30 @@ const UploadScreen = ({ navigation, setSelectedImage }) => {
         try {
             const storagePermissionStatus = await AsyncStorage.getItem('storagePermission');
             const cameraPermissionStatus = await AsyncStorage.getItem('cameraPermission');
-            console.log(storagePermissionStatus, cameraPermissionStatus);
             if (cameraPermissionStatus !== 'granted') {
                 const { status: cameraPermission } = await ImagePicker.requestCameraPermissionsAsync();
-                if (cameraStatus === 'granted') {
+                if (cameraPermission === 'granted') {
                     await AsyncStorage.setItem('cameraPermission', 'granted');
                 } else {
-                    console.error('Permission to access camera denied');
+                    Alert.alert("Camera access denied", "Kindly provide camera access to click a picture!!")
                 }
             }
 
             if (storagePermissionStatus !== 'granted') {
                 const { status: storagePermission } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-                if (status === 'granted') {
+                if (storagePermission === 'granted') {
                     await AsyncStorage.setItem('storagePermission', 'granted');
                 } else {
-                    console.error('Permission to access media library denied');
+                    Alert.alert("Media access denied", "Kindly provide Media access to upload a post!")
                 }
             }
-            if (cameraPermissionStatus === 'granted' && storagePermissionStatus === 'granted') {
-                console.log('Permissions Already granted');
-            }
-            else if (
-                cameraPermission === 'granted' &&
-                storagePermission === 'granted'
-            ) {
-                console.log('Permissions granted');
-            } else {
-                console.log('Permissions denied');
+            if (cameraPermissionStatus !== 'granted' && storagePermissionStatus !== 'granted') {
+                Alert.alert("Access denied", "Ig can not access camera or media. \n Please Give the access to upload a post.")
+
             }
         } catch (error) {
-            console.error('Error requesting permissions:', error);
+            Alert.alert("Error", error + "Please try Again!")
+
         }
     };
 
@@ -62,8 +55,6 @@ const UploadScreen = ({ navigation, setSelectedImage }) => {
             allowsEditing: true,
             quality: 1,
         });
-
-        console.log(result.assets, result.canceled);
 
         if (!result.canceled) {
             setSelectedImage(result.assets[0].uri);
@@ -144,37 +135,5 @@ const styles = StyleSheet.create({
 
     },
 });
-
-
-
-
-// const styles = StyleSheet.create({
-//     container: {
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//     },
-//     title: {
-//         fontSize: 24,
-//         fontWeight: 'bold',
-//         marginBottom: 20,
-//     },
-//     selectedImage: {
-//         width: 400,
-//         height: 400,
-//         borderRadius: 10,
-//         marginVertical: 10,
-//         resizeMode: 'contain'
-//     },
-//     button: {
-//         backgroundColor: '#3498db',
-//         padding: 10,
-//         borderRadius: 5,
-//         marginVertical: 10,
-//     },
-//     buttonText: {
-//         color: '#fff',
-//         textAlign: 'center',
-//     },
-// });
 
 export default UploadScreen;

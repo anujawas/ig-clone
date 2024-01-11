@@ -36,7 +36,6 @@ const FetchRecent = ({ navigation, setSelectedImage }) => {
         }
     };
     const renderImageItem = ({ item }) => {
-        console.log(item);
         return (
             <TouchableOpacity style={styles.imageContainer} onPress={() => {
                 setSelectedImage(item.uri)

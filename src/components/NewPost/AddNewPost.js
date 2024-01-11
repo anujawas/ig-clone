@@ -1,7 +1,6 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import UploadScreen from './NewPostUpload'
-import PostUploader from './PostUploader'
 
 const Header = ({ navigation }) => {
     return (
