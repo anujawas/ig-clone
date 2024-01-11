@@ -8,10 +8,11 @@ import * as Yup from 'yup'
 import validator from 'email-validator'
 
 import { firebase } from '../../../firebase'
+import { useLoading } from '../../../LoadingContext'
+
 
 const LoginForm = ({ navigation }) => {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
-
     const loginFormSchema = Yup.object().shape({
         email: Yup.string()
             .required('An email is Required')
@@ -22,10 +23,11 @@ const LoginForm = ({ navigation }) => {
             .min(6, 'Password must be at least 6 characters')
     })
 
-
+    const { setLoading } = useLoading()
     const onLogin = async (email, password) => {
+        setLoading(true)
         try {
-            await firebase.auth().signInWithEmailAndPassword(email, password)
+            const authCredential = await firebase.auth().signInWithEmailAndPassword(email, password)
             ToastAndroid.showWithGravityAndOffset(
                 "Successfully logged in.",
                 ToastAndroid.LONG,
@@ -36,7 +38,6 @@ const LoginForm = ({ navigation }) => {
             Alert.alert('Error', error.message + "\n\n What would you like to do?", [
                 {
                     text: 'Try Again',
-                    onPress: () => console.log('Cancel Pressed'),
                     style: 'cancel'
                 },
                 {
@@ -45,6 +46,7 @@ const LoginForm = ({ navigation }) => {
                 },
             ])
         }
+        setLoading(false)
     }
     return (
         <View style={{ flex: 1, justifyContent: 'space-between' }}>
