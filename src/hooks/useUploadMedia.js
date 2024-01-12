@@ -7,7 +7,6 @@ const useUploadMedia = () => {
     const [imageUrl, setImageUrl] = useState(null);
 
     const uploadMedia = async (selectedImage) => {
-        console.log(selectedImage);
         try {
             const { uri } = await FileSystem.getInfoAsync(selectedImage);
             const blob = await new Promise((resolve, reject) => {
@@ -29,6 +28,7 @@ const useUploadMedia = () => {
 
             const imgUrl = await storage.ref(`/postImage/${filename}`).getDownloadURL();
             setImageUrl(imgUrl);
+            return imgUrl;
         } catch (error) {
             Alert.alert('Failed', `${error}\nUpload failed!!\nTry again.`);
         }
