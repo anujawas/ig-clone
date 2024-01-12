@@ -7,12 +7,12 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import validator from 'email-validator'
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { firebase, db } from '../../../firebase'
 import { useLoading } from '../../../LoadingContext'
+import { useAuth } from '../../../AuthContext'
 
 const SignUpForm = ({ navigation }) => {
+    const { setCurrentUser } = useAuth()
     const [secureTextEntry, setSecureTextEntry] = useState(true)
 
     const SignUpFormSchema = Yup.object().shape({
@@ -38,21 +38,30 @@ const SignUpForm = ({ navigation }) => {
     const onSignUp = async (email, password, username) => {
         setLoading(true)
         try {
-            const authCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+            const userExist = await db.collection('users')
+                .doc(username).get()
+
+            if (userExist.exists) {
+                throw TypeError(`Username ${username} already exists. Kindly try another Username.`)
+            }
+
+            const authCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
             ToastAndroid.showWithGravityAndOffset(
                 "New Account Created Successfully.",
                 ToastAndroid.SHORT,
                 ToastAndroid.TOP,
                 0, 200
             )
+
             await db.collection('users')
-                .doc(authCredential.user.email)
+                .doc(username)
                 .set({
                     owner_uid: authCredential.user?.uid,
                     username: username,
                     email: authCredential.user.email,
                     profilePic: await getRandomProfilePicture(),
                 })
+            setCurrentUser(true)
 
         } catch (error) {
             Alert.alert('Error', error.message)
@@ -154,7 +163,7 @@ const SignUpForm = ({ navigation }) => {
                 text-md
                 "
                                 >
-                                    Sign Up
+                                    Add a Profile picture
                                 </Text>
                             </Pressable>
 
