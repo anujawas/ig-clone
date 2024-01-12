@@ -9,9 +9,11 @@ import validator from 'email-validator'
 
 import { firebase } from '../../../firebase'
 import { useLoading } from '../../../LoadingContext'
+import { useAuth } from '../../../AuthContext'
 
 
 const LoginForm = ({ navigation }) => {
+    const { setCurrentUser } = useAuth()
     const [secureTextEntry, setSecureTextEntry] = useState(true)
     const loginFormSchema = Yup.object().shape({
         email: Yup.string()
@@ -28,6 +30,7 @@ const LoginForm = ({ navigation }) => {
         setLoading(true)
         try {
             const authCredential = await firebase.auth().signInWithEmailAndPassword(email, password)
+            setCurrentUser(true)
             ToastAndroid.showWithGravityAndOffset(
                 "Successfully logged in.",
                 ToastAndroid.LONG,
