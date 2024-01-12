@@ -2,18 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { SignedInStack, SignedOutStack } from './navigation'
 
 import { firebase } from './firebase'
+import { useAuth } from './AuthContext'
 
 const AuthNavigation = () => {
+    const { currentUser } = useAuth()
 
-    const [currentUser, setCurrentUser] = useState(null);
+    const [currentUserlogin, setCurrentUserlogin] = useState(null);
     const userHandler = user =>
-        user ? setCurrentUser(user) : setCurrentUser(null)
+        user ? setCurrentUserlogin(user) : setCurrentUserlogin(null)
 
 
     useEffect(() =>
         firebase.auth().onAuthStateChanged(user => userHandler(user))
         , [])
-    return <>{currentUser ? <SignedInStack /> : <SignedOutStack />}</>
+    return <>{currentUserlogin && currentUser ? <SignedInStack /> : <SignedOutStack />}</>
 }
 
 export default AuthNavigation
