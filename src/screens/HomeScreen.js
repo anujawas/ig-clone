@@ -35,7 +35,7 @@ const HomeScreen = ({ navigation }) => {
         if (firebase.auth().currentUser !== null) {
 
             db.collectionGroup('posts').onSnapshot(snapshot => {
-                setPosts(snapshot.docs.map(doc => doc.data()));
+                setPosts(snapshot.docs.sort((a, b) => Number(b.data().created_at) - Number(a.data().created_at)).map(doc => doc.data()));
             })
         }
 
