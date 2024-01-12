@@ -16,7 +16,7 @@ const UploadPostScheme = Yup.object().shape({
 
 const PostUploader = ({ navigation, selectedImage }) => {
     const { currentUser } = useAuth()
-
+    const { uploadMedia } = useUploadMedia();
     const uploadPost = async (imageUrl, caption) => {
         const unsubscribe = await db.collection('users')
             .doc(currentUser.username)
@@ -35,11 +35,12 @@ const PostUploader = ({ navigation, selectedImage }) => {
     }
 
     const { setLoading } = useLoading()
-    const { imageUrl, uploadMedia } = useUploadMedia();
     const handleSubmit = async (selectedImage, caption) => {
+
         setLoading(true);
-        await uploadMedia(selectedImage);
-        await uploadPost(imageUrl, caption);
+        const img = await uploadMedia(selectedImage);
+        console.log(img);
+        await uploadPost(img, caption);
         setLoading(false)
         ToastAndroid.showWithGravityAndOffset(
             "Post uploaded successfully.",
