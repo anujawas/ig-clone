@@ -1,67 +1,59 @@
 import { Image, Pressable, StyleSheet, Text, TextInput, View, Platform, ToastAndroid, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as Yup from 'yup'
 
 import { Formik } from 'formik'
 import { Divider } from 'react-native-elements'
-import * as FileSystem from 'expo-file-system'
 
-import { db, firebase, storage } from '../../../firebase'
+import { db, firebase } from '../../../firebase'
 import { useLoading } from '../../../LoadingContext'
+import useUploadMedia from '../../hooks/useUploadMedia'
+import { useAuth } from '../../../AuthContext'
 
 const UploadPostScheme = Yup.object().shape({
     caption: Yup.string().max(2200, 'Caption has a maximum characters limit.')
 })
 
 const PostUploader = ({ navigation, selectedImage }) => {
-    const [uploadedImgUrl, setUploadedImgUrl] = useState("")
+    const { currentUser } = useAuth()
+
+    const uploadPost = async (imageUrl, caption) => {
+        const unsubscribe = await db.collection('users')
+            .doc(currentUser.username)
+            .collection('posts')
+            .add({
+                imageUrl: imageUrl,
+                user: currentUser.username,
+                likes: 0,
+                owner_uid: firebase.auth().currentUser.uid,
+                created_at: firebase.firestore.FieldValue.serverTimestamp(),
+                likes_by_users: [],
+                caption: caption,
+                profilePic: currentUser.profilePic,
+                comments: []
+            })
+    }
+
     const { setLoading } = useLoading()
-
-    const uploadMedia = async (image, caption) => {
+    const { imageUrl, uploadMedia } = useUploadMedia();
+    const handleSubmit = async (selectedImage, caption) => {
         setLoading(true);
-        try {
-            const { uri } = await FileSystem.getInfoAsync(selectedImage);
-            const blob = await new Promise((resolve, reject) => {
-                const xhr = new XMLHttpRequest();
-                xhr.onload = () => {
-                    resolve(xhr.response);
-                };
-                xhr.onerror = (e) => {
-                    reject(new Error(`Network Request Failed`));
-                };
-                xhr.responseType = 'blob';
-                xhr.open('GET', uri, true);
-                xhr.send(null);
-            });
-            const filename = image.substring(image.lastIndexOf('/') + 1);
-            const ref = storage.ref('/postImage').child(filename);
-            await ref.put(blob);
-
-            const imgUrl = await storage
-                .ref(`/postImage/${filename}`)
-                .getDownloadURL();
-
-            setUploadedImgUrl(imgUrl);
-
-            ToastAndroid.showWithGravityAndOffset(
-                "Post uploaded successfully.",
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP,
-                0, 200
-            )
-
-        }
-        catch (error) {
-            Alert.alert("Failed", error + "Upload failed!!\nTry again.")
-        }
+        await uploadMedia(selectedImage);
+        await uploadPost(imageUrl, caption);
         setLoading(false)
+        ToastAndroid.showWithGravityAndOffset(
+            "Post uploaded successfully.",
+            ToastAndroid.SHORT,
+            ToastAndroid.TOP,
+            0, 200
+        )
     }
 
     return (
         <Formik
             initialValues={{ caption: '' }}
             onSubmit={async (values) => {
-                await uploadMedia(selectedImage, values.caption)
+                await handleSubmit(selectedImage, values.caption)
                 navigation.navigate('Home')
             }}
             validationSchema={UploadPostScheme}
