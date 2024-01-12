@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -7,16 +7,35 @@ import Stories from '../components/Home/Stories'
 import Post from '../components/Home/Post'
 
 
-import { POSTS } from '../../assets/data/Posts'
 import BottomTabs from '../components/Home/BottomTabs'
 import { db, firebase } from '../../firebase'
+import { useAuth } from '../../AuthContext'
 
 const HomeScreen = ({ navigation }) => {
+    const { setCurrentUser } = useAuth()
+
+    const getUsername = () => {
+        const user = firebase.auth().currentUser;
+        const unsubscribe = db.collection('users').where('owner_uid', '==', user.uid).limit(1).onSnapshot(
+            snapshot => snapshot.docs.map(doc => {
+                setCurrentUser({
+                    username: doc.data().username,
+                    profilePic: doc.data().profilePic
+                })
+            })
+        )
+
+        return unsubscribe;
+    }
+    useEffect(() => {
+        getUsername()
+    }, [])
+    const [posts, setPosts] = useState([]);
     useEffect(() => {
         if (firebase.auth().currentUser !== null) {
 
             db.collectionGroup('posts').onSnapshot(snapshot => {
-                console.log(snapshot.docs.map(doc => doc.data()));
+                setPosts(snapshot.docs.map(doc => doc.data()));
             })
         }
 
@@ -27,7 +46,7 @@ const HomeScreen = ({ navigation }) => {
             <Header navigation={navigation} />
             <Stories />
             <ScrollView>
-                {POSTS.map((post, index) => (<Post post={post} key={index} />))}
+                {posts.map((post, index) => (<Post post={post} key={index} />))}
             </ScrollView>
             <BottomTabs />
         </SafeAreaView>
