@@ -1,10 +1,13 @@
+import { AuthProvider } from "./AuthContext";
 import AuthNavigation from "./AuthNavigation";
 import { LoadingProvider } from "./LoadingContext";
 
 export default function App() {
   return (
-    <LoadingProvider>
-      <AuthNavigation />
-    </LoadingProvider>
+    <AuthProvider>
+      <LoadingProvider>
+        <AuthNavigation />
+      </LoadingProvider>
+    </AuthProvider>
   );
 }
