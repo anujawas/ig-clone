@@ -21,7 +21,7 @@ export const SignedInStack = () => {
             <Stack.Navigator initialRouteName='Home' screenOptions={screenOptions}>
                 <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen name="NewPost">
-                    {props => <NewPostScreen {...props} setSelectedImage={setSelectedImage} />}
+                    {props => <NewPostScreen {...props} selectedImage={selectedImage} setSelectedImage={setSelectedImage} />}
                 </Stack.Screen>
                 <Stack.Screen name="Upload">
                     {props => <UploadPostScreen {...props} selectedImage={selectedImage} />}
