@@ -38,7 +38,7 @@ const PostUploader = ({ navigation, selectedImage }) => {
     const handleSubmit = async (selectedImage, caption) => {
 
         setLoading(true);
-        const img = await uploadMedia(selectedImage);
+        const img = await uploadMedia(selectedImage, 'postImage');
         console.log(img);
         await uploadPost(img, caption);
         setLoading(false)
