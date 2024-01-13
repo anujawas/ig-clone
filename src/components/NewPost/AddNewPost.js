@@ -20,11 +20,11 @@ const Header = ({ navigation }) => {
     )
 }
 
-const AddNewPost = ({ navigation, setSelectedImage }) => {
+const AddNewPost = ({ navigation, selectedImage, setSelectedImage }) => {
     return (
         <View style={styles.container}>
             <Header navigation={navigation} />
-            <UploadScreen navigation={navigation} setSelectedImage={setSelectedImage} />
+            <UploadScreen navigation={navigation} selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
         </View>
     )
 }

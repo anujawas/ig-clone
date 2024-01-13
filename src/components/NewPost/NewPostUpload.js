@@ -5,13 +5,16 @@ import {
     TouchableOpacity,
     StyleSheet,
     Alert,
+    Image
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Camera } from 'expo-camera';
 import FetchRecent from './FetchRecent';
 
-const UploadScreen = ({ navigation, setSelectedImage }) => {
+const UploadScreen = ({ navigation, selectedImage, setSelectedImage }) => {
+    const [cameraSide, setCameraSide] = useState(Camera.Constants.Type.back);
+
     const [camera, setCamera] = useState(null);
     useEffect(() => {
         requestPermissions();
@@ -48,6 +51,14 @@ const UploadScreen = ({ navigation, setSelectedImage }) => {
         }
     };
 
+    const handFlip = () => {
+        if (cameraSide === Camera.Constants.Type.back) {
+            setCameraSide(Camera.Constants.Type.front);
+        }
+        else {
+            setCameraSide(Camera.Constants.Type.back);
+        }
+    }
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -58,16 +69,20 @@ const UploadScreen = ({ navigation, setSelectedImage }) => {
 
         if (!result.canceled) {
             setSelectedImage(result.assets[0].uri);
-            navigation.push('Upload')
         }
     };
     const takePhoto = async () => {
         if (camera) {
             const photo = await camera.takePictureAsync();
             setSelectedImage(photo.uri);
-            navigation.push('Upload')
         }
     };
+
+    useEffect(() => {
+        if (selectedImage) {
+            navigation.push('Upload')
+        }
+    }, selectedImage)
 
     return (
 
@@ -76,10 +91,26 @@ const UploadScreen = ({ navigation, setSelectedImage }) => {
                 <Text style={styles.title}>Choose or Take a Photo</Text>
 
                 <Camera
-                    style={styles.cameraPreview}
-                    type={Camera.Constants.Type.back}
+                    style={[styles.cameraPreview, {
+                        borderRadius: 50
+                    }]}
+                    type={cameraSide}
                     ref={(ref) => setCamera(ref)}
                 >
+                    <View onTouchEnd={handFlip}>
+                        <Image source={{ uri: 'https://img.icons8.com/sf-black/64/FFFFFF/change.png' }}
+                            style={{
+                                width: 50,
+                                height: 50,
+                                zIndex: 999,
+                                backgroundColor: 'black',
+                                borderRadius: 10,
+                                padding: 10,
+                                borderColor: 'white',
+                                borderWidth: 2
+                            }}
+                        />
+                    </View>
 
                 </Camera>
                 <View style={styles.buttonContainer}>
@@ -92,7 +123,7 @@ const UploadScreen = ({ navigation, setSelectedImage }) => {
                         <Text style={styles.buttonText}>Take a Photo</Text>
                     </TouchableOpacity>
                 </View>
-                <FetchRecent navigation={navigation} setSelectedImage={setSelectedImage} />
+                <FetchRecent setSelectedImage={setSelectedImage} />
             </View>
         </View>
     )
@@ -101,8 +132,6 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'black',
         flex: 1,
-        paddingHorizontal: 10
-
     },
     title: {
         fontSize: 24,
@@ -111,10 +140,10 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
     buttonContainer: {
-        marginVertical: 30,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         width: '100%',
+        marginVertical: 10
     },
     button: {
         backgroundColor: '#3498db',
@@ -129,9 +158,9 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     cameraPreview: {
-        width: 300,
-        height: 400,
-        borderRadius: 50,
+        width: 350,
+        height: 450,
+        alignItems: 'flex-end'
 
     },
 });
