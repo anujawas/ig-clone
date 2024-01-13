@@ -1,9 +1,11 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, ToastAndroid } from 'react-native'
 import { firebase } from "../../../firebase"
+import { useAuth } from '../../../AuthContext'
 
 
 const Header = ({ navigation }) => {
+    const { setCurrentUser } = useAuth()
     const handleHomeClick = async () => (
         Alert.alert('Home Options', "You have Pressed Home Button.\nWhat would you like do", [
             {
@@ -16,14 +18,13 @@ const Header = ({ navigation }) => {
                 text: 'Log out',
                 onPress: async () => {
                     try {
-                        await firebase.auth().signOut().then(
-                            (res) = (
-                                ToastAndroid.showWithGravityAndOffset(
-                                    "Successfully logged out.",
-                                    ToastAndroid.LONG,
-                                    ToastAndroid.TOP,
-                                    0, 200)
-                            )
+                        await firebase.auth().signOut()
+                        setCurrentUser(null);
+                        ToastAndroid.showWithGravityAndOffset(
+                            "Successfully logged out.",
+                            ToastAndroid.LONG,
+                            ToastAndroid.TOP,
+                            0, 200
                         )
                     } catch {
                         Alert.alert("Signout Error", "Failed to sign out the user.\nKindly try again")
