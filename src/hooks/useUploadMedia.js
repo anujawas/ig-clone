@@ -6,7 +6,7 @@ import { storage } from '../../firebase'; // Import Firebase storage
 const useUploadMedia = () => {
     const [imageUrl, setImageUrl] = useState(null);
 
-    const uploadMedia = async (selectedImage) => {
+    const uploadMedia = async (selectedImage, bucket) => {
         try {
             const { uri } = await FileSystem.getInfoAsync(selectedImage);
             const blob = await new Promise((resolve, reject) => {
@@ -23,10 +23,10 @@ const useUploadMedia = () => {
             });
 
             const filename = selectedImage.substring(selectedImage.lastIndexOf('/') + 1);
-            const ref = storage.ref('/postImage').child(filename);
+            const ref = storage.ref(`/${bucket}`).child(filename);
             await ref.put(blob);
 
-            const imgUrl = await storage.ref(`/postImage/${filename}`).getDownloadURL();
+            const imgUrl = await storage.ref(`/${bucket}/${filename}`).getDownloadURL();
             setImageUrl(imgUrl);
             return imgUrl;
         } catch (error) {
