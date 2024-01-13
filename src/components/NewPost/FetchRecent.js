@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
 
-const FetchRecent = ({ navigation, setSelectedImage }) => {
+const FetchRecent = ({ setSelectedImage }) => {
     const [recentPhotos, setRecentPhotos] = useState([]);
 
     useEffect(() => {
@@ -39,7 +39,6 @@ const FetchRecent = ({ navigation, setSelectedImage }) => {
         return (
             <TouchableOpacity style={styles.imageContainer} onPress={() => {
                 setSelectedImage(item.uri)
-                navigation.push('Upload')
             }}>
                 <Image source={{ uri: item.uri }} style={styles.image} />
             </TouchableOpacity>
@@ -49,7 +48,7 @@ const FetchRecent = ({ navigation, setSelectedImage }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Recent Photos</Text>
-            <ScrollView>
+            <ScrollView horizontal>
                 <View style={{
                     height: 200,
                     flex: 1
