@@ -10,6 +10,7 @@ import Post from '../components/Home/Post'
 import BottomTabs from '../components/Home/BottomTabs'
 import { db, firebase } from '../../firebase'
 import { useAuth } from '../../AuthContext'
+import useActiveTab from '../hooks/FooterState'
 
 const HomeScreen = ({ navigation }) => {
     const { setCurrentUser } = useAuth()
@@ -27,6 +28,7 @@ const HomeScreen = ({ navigation }) => {
 
         return unsubscribe;
     }
+    const { activeTab } = useActiveTab('Home')
     useEffect(() => {
         getUsername()
     }, [])
@@ -48,7 +50,7 @@ const HomeScreen = ({ navigation }) => {
             <ScrollView>
                 {posts.map((post, index) => (<Post post={post} key={index} />))}
             </ScrollView>
-            <BottomTabs />
+            <BottomTabs navigation={navigation} activeTab={activeTab} />
         </SafeAreaView>
     )
 }
