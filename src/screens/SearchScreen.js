@@ -3,7 +3,7 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import SearchBar from '../components/Search/SearchBar'
 import BottomTabs from '../components/Home/BottomTabs'
-import useActiveTab from '../hooks/FooterState'
+import useActiveTab from '../hooks/useFooterState'
 
 
 const SearchScreen = ({ navigation }) => {

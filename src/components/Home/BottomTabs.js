@@ -1,9 +1,8 @@
 import { View, TouchableOpacity, Image, StyleSheet } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Divider } from 'react-native-elements'
-import { firebase, db } from "../../../firebase"
 import { useAuth } from '../../../AuthContext'
-import useActiveTab from '../../hooks/FooterState'
+import useActiveTab from '../../hooks/useFooterState'
 
 
 
