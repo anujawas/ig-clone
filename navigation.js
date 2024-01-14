@@ -8,6 +8,7 @@ import NewPostScreen from './src/screens/NewPostScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import UploadPostScreen from './src/screens/UploadPostScreen';
+import SearchScreen from './src/screens/SearchScreen';
 const Stack = createStackNavigator();
 
 const screenOptions = {
@@ -26,6 +27,7 @@ export const SignedInStack = () => {
                 <Stack.Screen name="Upload">
                     {props => <UploadPostScreen {...props} selectedImage={selectedImage} />}
                 </Stack.Screen>
+                <Stack.Screen name='Search' component={SearchScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     )
