@@ -3,11 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { Divider } from 'react-native-elements'
 import { firebase, db } from "../../../firebase"
 import { useAuth } from '../../../AuthContext'
+import useActiveTab from '../../hooks/FooterState'
 
 
 
 
-const BottomTabs = () => {
+const BottomTabs = ({ navigation, activeTab }) => {
+    const { setActive } = useActiveTab()
     const { currentUser } = useAuth()
     const BottomTabsIcons = [{
         "name": "Home",
@@ -31,10 +33,13 @@ const BottomTabs = () => {
         "active": currentUser ? currentUser.profilePic : 'https://placehold.co/600x400/png',
         "inactive": currentUser ? currentUser.profilePic : 'https://placehold.co/600x400/png'
     }]
-    const [activeTab, setActiveTab] = useState("Home");
 
     const Icon = ({ icon }) => (
-        <TouchableOpacity onPress={() => setActiveTab(icon.name)}>
+        <TouchableOpacity onPress={() => {
+            navigation.navigate(icon.name)
+            setActive(icon.name)
+        }
+        }>
             <Image
                 source={{ uri: activeTab === icon.name ? icon.active : icon.inactive }}
                 style={[styles.icon, icon.name === "Profile" ? styles.profilePicture() : null,
