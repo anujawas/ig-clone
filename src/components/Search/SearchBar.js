@@ -1,23 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons'; // Import the Feather icon library
 
 const SearchInput = ({ onSearch }) => {
     const [searchText, setSearchText] = useState('');
-
+    const inputRef = useRef(null);
     const handleSearch = () => {
-        // Pass the search text to the parent component or perform search logic
         setBackIcon(false);
     };
+    const handleExternalButtonClick = () => {
+        if (inputRef.current) {
+            inputRef.current.blur();
+        }
+        setBackIcon(!backIcon)
+    };
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (inputRef.current) {
+                inputRef.current.blur();
+            }
+        }, 100);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     const [backIcon, setBackIcon] = useState(false)
     return (
         <View style={styles.container}>
-            {backIcon && <TouchableOpacity style={styles.backButton}>
-                <Feather name={"arrow-left"} size={
-                    24
-                } color="white" onPress={() => { setBackIcon(!backIcon) }} />
-            </TouchableOpacity>}
+            {backIcon &&
+                <TouchableOpacity style={styles.backButton} onPress={handleExternalButtonClick}>
+                    <Feather name={"arrow-left"} size={
+                        24
+                    } color="white" />
+                </TouchableOpacity>}
             <View style={styles.searchContainer}>
                 <Feather name="search" size={20} color={backIcon ? 'gray' : 'white'} style={styles.searchIcon} />
                 <TextInput
@@ -28,6 +44,8 @@ const SearchInput = ({ onSearch }) => {
                     onTouchStart={() => setBackIcon(true)}
                     onSubmitEditing={handleSearch}
                     placeholderTextColor={"gray"}
+                    ref={inputRef}
+
                 />
             </View>
         </View >
@@ -54,6 +72,8 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
+        color: 'white',
+
         height: 40,
     },
     backButton: {
