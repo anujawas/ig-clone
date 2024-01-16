@@ -11,29 +11,31 @@ const Stories = () => {
     return (
         <View style={styles.container}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <TouchableOpacity style={{ alignItems: 'center', marginLeft: 2 }}>
-                    <Image
-                        source={{ uri: currentUser ? currentUser.profilePic : 'https://placehold.co/600x400/png' }}
-                        style={[styles.storyImage, { borderWidth: 0 }]}
-                    />
+                <View style={{ alignItems: 'center', marginLeft: 2 }}>
+                    <TouchableOpacity>
+                        <Image
+                            source={{ uri: currentUser ? currentUser.profilePic : 'https://placehold.co/600x400/png' }}
+                            style={[styles.storyImage, { borderWidth: 0 }]}
+                        />
+                    </TouchableOpacity>
                     <AntDesign style={styles.plusLogo} name="pluscircle" size={24} color="blue"
                     />
-
                     <Text style={styles.username}>
                         Your Story
                     </Text>
-                </TouchableOpacity>
+                </View>
                 {Users.map((story, index) => (
-                    <TouchableOpacity key={index} style={{ alignItems: 'center', marginLeft: 2 }}>
-                        <Image
-                            source={{ uri: `${story.image}` }}
-                            style={styles.storyImage}
-
-                        />
+                    <View key={index} style={{ alignItems: 'center', marginLeft: 2 }}>
+                        <TouchableOpacity>
+                            <Image
+                                source={{ uri: `${story.image}` }}
+                                style={styles.storyImage}
+                            />
+                        </TouchableOpacity>
                         <Text style={styles.username}>
                             {story.username.length > 11 ? story.username.slice(0, 10).toLowerCase() + '...' : story.username.toLowerCase()}
                         </Text>
-                    </TouchableOpacity>
+                    </View>
                 ))}
 
             </ScrollView>
